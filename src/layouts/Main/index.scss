@@ -1,0 +1,16 @@
+.main-template {
+  min-height: 100vh;
+
+  .ant-layout-footer {
+    display: flex;
+    align-items: center;
+    a {
+      display: flex;
+      color: inherit;
+
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+  }
+}

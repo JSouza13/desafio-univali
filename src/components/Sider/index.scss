@@ -1,0 +1,59 @@
+@import "../../assets/sass/configuration/colors.scss";
+.menu {
+  background-color: #001529;
+  & > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .user-area {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 64px;
+    background-color: #002240;
+    .ant-menu {
+      background-color: #002240;
+    }
+    .ant-menu,
+    .ant-menu-submenu-title:active {
+      background: transparent;
+      outline: none;
+      border: none;
+    }
+
+    .ant-menu-submenu-arrow {
+      display: none;
+    }
+
+    .avatar {
+      background: white;
+    }
+  }
+
+  .menu-options {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    i {
+      color: white;
+      font-size: 20px;
+    }
+
+    .item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      padding: 10px;
+      flex-wrap: wrap;
+      color: white;
+      &:hover {
+        background: #337ab7;
+      }
+    }
+  }
+}
