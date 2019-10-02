@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Icon, Tooltip } from "antd";
+import { Layout, Menu, Icon, Tooltip } from "antd";
 import "./index.scss";
 const { Sider } = Layout;
 
