@@ -1,15 +1,14 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import MainTemplate from "../layouts/Main";
 
-import MainTemplate from "./layouts/Main";
-import Formulario from "./pages/CadastroItem";
-
-export default function Routes() {
+export default () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" component={Formulario} />
+        {/* Cadastro */}
+        <Route path="/" component={MainTemplate} />
       </Switch>
     </BrowserRouter>
   );
-}
+};

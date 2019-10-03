@@ -1,42 +1,8 @@
 .formulario-cadastro {
-  height: 100%;
-  display: flex;
-  justify-content: center;
   align-items: center;
-
-  form {
-    width: 100%;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ant-checkbox-wrapper {
-    padding: 24px 0px;
-  }
-
-  input {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #666;
-  }
-  .ant-calendar-picker {
-    margin-bottom: 24px;
-  }
-}
-
-label {
-  display: inline-block;
-  overflow: hidden;
-  line-height: 39.9999px;
-  white-space: nowrap;
-  vertical-align: middle;
-  position: relative;
-  color: rgba(0, 0, 0, 0.85);
-}
-
-.ant-select {
-  margin-bottom: 24px;
-  vertical-align: top;
-  line-height: 40px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: -webkit-fill-available;
 }

@@ -1,24 +1,12 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, DatePicker } from "antd";
-import { Select } from "antd";
+import { Form, Button, Checkbox, DatePicker, Select, Input, Card } from "antd";
+import InputCustom from "../../components/Input";
+import "antd/dist/antd.css";
+
 import "./index.scss";
 
 export default function CadastroItem() {
-  const { formLayout } = "horizontal";
-
-  const formItemLayout =
-    formLayout === "horizontal"
-      ? {
-          labelCol: { span: 4 },
-          wrapperCol: { span: 14 }
-        }
-      : null;
-  const buttonItemLayout =
-    formLayout === "horizontal"
-      ? {
-          wrapperCol: { span: 14, offset: 4 }
-        }
-      : null;
+  const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
 
   const { Option } = Select;
 
@@ -28,14 +16,22 @@ export default function CadastroItem() {
 
   return (
     <>
-      <div className="formulario-cadastro">
-        <Form layout={formLayout}>
-          <Form.Item label="Descrição" {...formItemLayout}>
+      <Card title="Cadastro de novo item" style={{ width: "100%" }}>
+        {/* <div
+          className="formulario-cadastro"
+          style={{
+            padding: "24px",
+            borderRadius: "24px",
+            background: "#FFF"
+          }}
+        > */}
+        <Form>
+          <Form.Item label={<span>Nickname</span>}>
             <Input placeholder="Informe a descrição" />
           </Form.Item>
 
-          <label>Unidade de medida :</label>
           <Select
+            style={{ width: "100%", marginBottom: "24px" }}
             showSearch
             placeholder="Selecione a unidade de medida"
             optionFilterProp="children"
@@ -50,25 +46,60 @@ export default function CadastroItem() {
             <Option value="unidade">Unidade</Option>
           </Select>
 
-          <Form.Item label="Quantidade" {...formItemLayout}>
-            <Input placeholder="Informe a quantidade" />
+          <Form.Item>
+            <InputCustom
+              label="Quantidade"
+              type="numeric"
+              decimalSeparator=","
+              decimalScale={3}
+              suffix="lt"
+              required
+              placeholder="Informe a quantidade"
+            />
           </Form.Item>
-          <Form.Item label="Preço" {...formItemLayout}>
-            <Input placeholder="Informe o preço" />
+          <Form.Item>
+            <InputCustom
+              prefix="R$"
+              thousandSeparator="."
+              decimalSeparator=","
+              decimalScale={2}
+              type="numeric"
+              label="Preço"
+              required
+              placeholder="Informe o preço"
+            />
           </Form.Item>
 
-          <Checkbox>Produto perecível</Checkbox>
-          <label>Data de fabricação</label>
+          <div className="data-box">
+            <Checkbox style={{ width: "100%", marginBottom: "24px" }}>
+              Produto perecível
+            </Checkbox>
 
-          <DatePicker onChange={onChange} />
-          <label>Data de validade</label>
-          <DatePicker onChange={onChange} />
+            <div className="data-fabricacao" style={{ width: "100%" }}>
+              <DatePicker
+                style={{ width: "100%", marginBottom: "24px" }}
+                onChange={""}
+                format={dateFormatList}
+                placeholder="Informe a data de fabricação"
+              />
+            </div>
 
-          <Form.Item {...formItemLayout}>
+            <div className="data-validade" style={{ width: "100%" }}>
+              <DatePicker
+                style={{ width: "100%", marginBottom: "24px" }}
+                onChange={""}
+                format={dateFormatList}
+                placeholder="Informe a data de validade"
+              />
+            </div>
+          </div>
+
+          <Form.Item>
             <Button type="primary">Salvar</Button>
           </Form.Item>
         </Form>
-      </div>
+        {/* </div> */}
+      </Card>
     </>
   );
 }

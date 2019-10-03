@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "antd/dist/antd.css";
 import { Layout } from "antd";
 import Components from "../../components";
+import MainRoutes from "../../routes/CadastroRoutes";
 import "./index.scss";
 
 const { Content } = Layout;
@@ -18,7 +19,9 @@ export default ({ children, ...props }) => {
             margin: "24px",
             minHeight: 280
           }}
-        />
+        >
+          <MainRoutes />
+        </Content>
         <Footer />
       </Layout>
     </Layout>
