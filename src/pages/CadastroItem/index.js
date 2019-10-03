@@ -16,17 +16,12 @@ export default function CadastroItem() {
 
   return (
     <>
-      <Card title="Cadastro de novo item" style={{ width: "100%" }}>
-        {/* <div
-          className="formulario-cadastro"
-          style={{
-            padding: "24px",
-            borderRadius: "24px",
-            background: "#FFF"
-          }}
-        > */}
+      <Card
+        title="Cadastro de novo item"
+        style={{ width: "100%", borderRadius: "24px", padding: "50px" }}
+      >
         <Form>
-          <Form.Item label={<span>Nickname</span>}>
+          <Form.Item label={<span>Descrição</span>}>
             <Input placeholder="Informe a descrição" />
           </Form.Item>
 
@@ -75,7 +70,10 @@ export default function CadastroItem() {
               Produto perecível
             </Checkbox>
 
-            <div className="data-fabricacao" style={{ width: "100%" }}>
+            <div
+              className="data-fabricacao"
+              style={{ width: "100%", maxWidth: "350px" }}
+            >
               <DatePicker
                 style={{ width: "100%", marginBottom: "24px" }}
                 onChange={""}
@@ -84,7 +82,10 @@ export default function CadastroItem() {
               />
             </div>
 
-            <div className="data-validade" style={{ width: "100%" }}>
+            <div
+              className="data-validade"
+              style={{ width: "100%", maxWidth: "350px" }}
+            >
               <DatePicker
                 style={{ width: "100%", marginBottom: "24px" }}
                 onChange={""}
@@ -98,7 +99,6 @@ export default function CadastroItem() {
             <Button type="primary">Salvar</Button>
           </Form.Item>
         </Form>
-        {/* </div> */}
       </Card>
     </>
   );

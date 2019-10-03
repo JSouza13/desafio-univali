@@ -6,7 +6,7 @@ const { Sider } = Layout;
 
 export default ({ ...props }) => {
   return (
-    <Sider className="menu" width={180} collapsedWidth="0" breakpoint="lg">
+    <Sider className="menu" width={280} collapsedWidth="0" breakpoint="lg">
       <div className="user-area">
         <div className="logo">
           <a class="link" target="_self" href="http://www.univali.br">
@@ -19,22 +19,22 @@ export default ({ ...props }) => {
         </div>
       </div>
       <div className="menu-options">
-        <Tooltip title="Cadastro" placement="right">
-          <div className="item">
-            <Link to="/">
+        <Link to="/">
+          <Tooltip title="Cadastro" placement="right">
+            <div className="item">
               <Icon type="form" />
               <span>Cadastro</span>
-            </Link>
-          </div>
-        </Tooltip>
-        <Tooltip title="Relatório" placement="right">
-          <div className="item">
-            <Link to="/relatorio">
+            </div>
+          </Tooltip>
+        </Link>
+        <Link to="/relatorio">
+          <Tooltip title="Relatório" placement="right">
+            <div className="item">
               <Icon type="snippets" />
               <span>Relatório</span>
-            </Link>
-          </div>
-        </Tooltip>
+            </div>
+          </Tooltip>
+        </Link>
       </div>
     </Sider>
   );
