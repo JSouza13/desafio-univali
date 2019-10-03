@@ -1,6 +1,7 @@
 @import "../../assets/sass/configuration/colors.scss";
 .menu {
-  background-color: #001529;
+  background: linear-gradient(#001529, #337ab7);
+
   & > div {
     display: flex;
     flex-direction: column;
@@ -14,7 +15,8 @@
     align-items: center;
     justify-content: center;
     height: 125px;
-    background-color: #004786;
+    background: linear-gradient(#9198e5, #337ab7);
+
     .logo {
       height: 70px;
       position: relative;
@@ -25,10 +27,6 @@
       img {
         margin: 10px;
       }
-    }
-
-    .ant-menu {
-      background-color: #004786;
     }
     .ant-menu,
     .ant-menu-submenu-title:active {
@@ -60,7 +58,9 @@
       flex-wrap: wrap;
       color: white;
       &:hover {
-        background: #337ab7;
+        transform: translateY(-5px);
+        transition: all 0.2s;
+        opacity: 0.6;
       }
     }
 
