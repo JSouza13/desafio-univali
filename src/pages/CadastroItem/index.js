@@ -1,7 +1,6 @@
 import React from "react";
 import { Form, Button, Checkbox, DatePicker, Select, Input, Card } from "antd";
 import InputCustom from "../../components/Input";
-import "antd/dist/antd.css";
 
 import "./index.scss";
 
@@ -72,7 +71,7 @@ export default function CadastroItem() {
 
             <div
               className="data-fabricacao"
-              style={{ width: "100%", maxWidth: "350px" }}
+              style={{ width: "100%", maxWidth: "350px", marginRight: "25px" }}
             >
               <DatePicker
                 style={{ width: "100%", marginBottom: "24px" }}
