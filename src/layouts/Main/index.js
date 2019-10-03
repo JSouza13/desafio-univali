@@ -11,15 +11,17 @@ const { Sider, Footer, Header } = Components;
 export default ({ children, ...props }) => {
   return (
     <Layout className="main-template">
-      <Sider />
+      <Sider
+        style={{
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0
+        }}
+      />
       <Layout>
         <Header style={{ background: "#fff", padding: 0 }} />
-        <Content
-          style={{
-            margin: "24px",
-            minHeight: 280
-          }}
-        >
+        <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
           <MainRoutes />
         </Content>
         <Footer />
