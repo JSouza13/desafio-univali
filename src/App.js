@@ -1,4 +1,5 @@
 import React from "react";
+import { ToastContainer } from "react-toastify";
 import Routes from "./routes";
 import { ConfigProvider } from "antd";
 import pt_BR from "antd/es/locale/pt_BR";
@@ -10,9 +11,8 @@ moment.locale("pt_BR");
 function App() {
   return (
     <ConfigProvider locale={pt_BR}>
-      <div className="App">
-        <Routes />
-      </div>
+      <Routes />
+      <ToastContainer autoClose={3000} />
     </ConfigProvider>
   );
 }
