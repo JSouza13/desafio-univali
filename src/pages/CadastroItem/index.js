@@ -1,27 +1,73 @@
-import React from "react";
+import React, { Component, useState } from "react";
 import { Form, Button, Checkbox, DatePicker, Select, Input, Card } from "antd";
+import useLocalStorage from "react-use-localstorage";
 import InputCustom from "../../components/Input";
 
 import "./index.scss";
 
 export default function CadastroItem() {
+  const [item, setItem] = useLocalStorage({
+    descricao: "",
+    unidadeMedida: "",
+    itemPerecivel: false,
+    quantidade: "",
+    preco: "",
+    dataFabricacao: "",
+    dataValidade: ""
+  });
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log("Received values of form: ", values);
+      }
+    });
+  };
+
+  // // Carregar os dados do localStorage
+  // const componentDidMount = () => {
+  //   const repositories = localStorage.getItem("repositories");
+
+  //   if (repositories) {
+  //     this.setState({ repositories: JSON.parse(repositories) });
+  //   }
+  // };
+
+  // // Salvar os dados do localStorage
+  // const componentDidUpdate = (_, prevState) => {
+  //   const { repositories } = this.state;
+
+  //   if (prevState.repositories !== repositories) {
+  //     localStorage.setItem("repositories", JSON.stringify(repositories));
+  //   }
+  // };
+
+  // const handleInputChange = e => {
+  //   this.setState({ newRepo: e.target.value, error: null });
+  // };
+
+  // const { newRepo, repositories, loading, error } = this.state;
+
   const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
 
   const { Option } = Select;
-
-  function onChange(date, dateString) {
-    console.log(date, dateString);
-  }
 
   return (
     <>
       <Card
         title="Cadastro de novo item"
         style={{ width: "100%", borderRadius: "24px", padding: "50px" }}
+        onSubmit={handleSubmit}
       >
         <Form>
-          <Form.Item label={<span>Descrição</span>}>
-            <Input placeholder="Informe a descrição" />
+          <Form.Item label="Descrição *" colon={false}>
+            <Input
+              type="text"
+              placeholder="Informe a descrição"
+              value={item}
+              onChange={e => setItem(e.target.value)}
+            />
           </Form.Item>
 
           <Select
@@ -64,40 +110,45 @@ export default function CadastroItem() {
             />
           </Form.Item>
 
-          <div className="data-box">
-            <Checkbox style={{ width: "100%", marginBottom: "24px" }}>
-              Produto perecível
-            </Checkbox>
+          <Checkbox style={{ width: "100%", marginBottom: "24px" }}>
+            Produto perecível
+          </Checkbox>
 
-            <div
-              className="data-fabricacao"
-              style={{ width: "100%", maxWidth: "350px", marginRight: "25px" }}
-            >
-              <DatePicker
-                style={{ width: "100%", marginBottom: "24px" }}
-                onChange={""}
-                format={dateFormatList}
-                placeholder="Informe a data de fabricação"
-              />
-            </div>
-
-            <div
-              className="data-validade"
-              style={{ width: "100%", maxWidth: "350px" }}
-            >
-              <DatePicker
-                style={{ width: "100%", marginBottom: "24px" }}
-                onChange={""}
-                format={dateFormatList}
-                placeholder="Informe a data de validade"
-              />
-            </div>
+          <div
+            className="data-fabricacao"
+            style={{
+              width: "100%",
+              maxWidth: "350px",
+              marginRight: "25px"
+            }}
+          >
+            <DatePicker
+              style={{ width: "100%", marginBottom: "24px" }}
+              onChange={""}
+              format={dateFormatList}
+              placeholder="Informe a data de fabricação"
+            />
           </div>
 
-          <Form.Item>
-            <Button type="primary">Salvar</Button>
-          </Form.Item>
+          <div
+            className="data-validade"
+            style={{ width: "100%", maxWidth: "350px" }}
+          >
+            <DatePicker
+              style={{ width: "100%", marginBottom: "24px" }}
+              onChange={""}
+              format={dateFormatList}
+              placeholder="Informe a data de validade"
+            />
+          </div>
         </Form>
+
+        <div className="button-options">
+          <Button type="primary" htmlType="submit">
+            Salvar
+          </Button>
+          <Button>Cancelar</Button>
+        </div>
       </Card>
     </>
   );
