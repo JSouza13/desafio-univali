@@ -13,3 +13,22 @@
   margin-right: 15px;
   margin-bottom: 5px;
 }
+
+.container {
+  margin-bottom: 30px;
+  padding: 30px;
+  background: #f2f2f2;
+  border-radius: 10px;
+
+  .ant-typography {
+    margin-bottom: 30px;
+  }
+}
+.required {
+  display: inline-block;
+  margin-right: 4px;
+  color: #f5222d;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+}

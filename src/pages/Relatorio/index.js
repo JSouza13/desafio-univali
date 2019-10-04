@@ -43,6 +43,8 @@ const data = [
 ];
 
 export default function CadastroItem() {
+  document.title = "Desafio - Listagem";
+
   return (
     <>
       <Card
@@ -50,7 +52,7 @@ export default function CadastroItem() {
         style={{ width: "100%", borderRadius: "24px", padding: "50px" }}
       >
         <Table columns={columns} dataSource={data} />
-        <Link to="/">
+        <Link to="/cadastro">
           <Button type="primary" htmlType="submit">
             Adicionar novo item
           </Button>

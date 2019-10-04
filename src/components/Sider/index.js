@@ -9,17 +9,17 @@ export default ({ ...props }) => {
     <Sider className="menu" width={280} collapsedWidth="0" breakpoint="lg">
       <div className="user-area">
         <div className="logo">
-          <a class="link" target="_self" href="http://www.univali.br">
+          <Link to="/">
             <img
               border="0"
               src="//intranet.univali.br/imagens/univali.png"
               alt="logo"
             />
-          </a>
+          </Link>
         </div>
       </div>
       <div className="menu-options">
-        <Link to="/">
+        <Link to="/cadastro">
           <Tooltip title="Cadastro" placement="right">
             <div className="item">
               <Icon type="form" />
