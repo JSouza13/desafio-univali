@@ -5,7 +5,15 @@ import InputCustom from "../../components/Input";
 
 import "./index.scss";
 
-export default function CadastroItem() {
+export default Form.create({ name: "novo-item" })(({ form, ...props }) => {
+  document.title = "Desafio - Cadastro de itens";
+
+  const { getFieldDecorator } = form;
+
+  const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
+
+  const { Option } = Select;
+
   const [item, setItem] = useLocalStorage({
     descricao: "",
     unidadeMedida: "",
@@ -16,140 +24,171 @@ export default function CadastroItem() {
     dataValidade: ""
   });
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-      }
+  function handleSubmit(event) {
+    event.preventDefault();
+    form.validateFields((err, values) => {
+      // if (!err) {
+      //   LoginApi.postLogin(values).then(response => {
+      //     const autenticado = Boolean(
+      //       response.dados && response.dados.autenticado
+      //     );
+      //     autenticar(autenticado);
+      //     if (
+      //       response.erros != null &&
+      //       response.erros.erros != null &&
+      //       response.erros.erros.length > 0
+      //     ) {
+      //       notification.warning({
+      //         message: response.erros.erros.join(),
+      //         description: "Erro ao autenticar."
+      //       });
+      //     }
+      //   });
+      // }
     });
-  };
-
-  // // Carregar os dados do localStorage
-  // const componentDidMount = () => {
-  //   const repositories = localStorage.getItem("repositories");
-
-  //   if (repositories) {
-  //     this.setState({ repositories: JSON.parse(repositories) });
-  //   }
-  // };
-
-  // // Salvar os dados do localStorage
-  // const componentDidUpdate = (_, prevState) => {
-  //   const { repositories } = this.state;
-
-  //   if (prevState.repositories !== repositories) {
-  //     localStorage.setItem("repositories", JSON.stringify(repositories));
-  //   }
-  // };
-
-  // const handleInputChange = e => {
-  //   this.setState({ newRepo: e.target.value, error: null });
-  // };
-
-  // const { newRepo, repositories, loading, error } = this.state;
-
-  const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
-
-  const { Option } = Select;
+  }
 
   return (
     <>
       <Card
         title="Cadastro de novo item"
         style={{ width: "100%", borderRadius: "24px", padding: "50px" }}
-        onSubmit={handleSubmit}
       >
         <Form>
-          <Form.Item label="Descrição *" colon={false}>
-            <Input
-              type="text"
-              placeholder="Informe a descrição"
-              value={item}
-              onChange={e => setItem(e.target.value)}
-            />
+          <Form.Item label="Descrição" colon={false}>
+            {getFieldDecorator("name", {
+              rules: [
+                {
+                  required: true,
+                  message: "Por favor, informe a descrição do item"
+                }
+              ]
+            })(<Input placeholder="Informe a descrição" />)}
           </Form.Item>
 
-          <Select
-            style={{ width: "100%", marginBottom: "24px" }}
-            showSearch
-            placeholder="Selecione a unidade de medida"
-            optionFilterProp="children"
-            filterOption={(input, option) =>
-              option.props.children
-                .toLowerCase()
-                .indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            <Option value="litro">Litro</Option>
-            <Option value="quilograma">Quilograma</Option>
-            <Option value="unidade">Unidade</Option>
-          </Select>
+          <Form.Item label="Unidade de medida">
+            {getFieldDecorator("unidade-medida", {
+              rules: [
+                {
+                  required: true,
+                  message: "A unidade de medida deve ser selecionada"
+                }
+              ]
+            })(
+              <Select placeholder="Selecione a unidade de medida" onChange={""}>
+                <Option key="1" value="lt">
+                  Litro
+                </Option>
+                <Option key="1" value="kg">
+                  Quilograma
+                </Option>
+                <Option key="2" value="un">
+                  Unidade
+                </Option>
+              </Select>
+            )}
+          </Form.Item>
+
+          <Form.Item label="Quantidade" colon={false}>
+            {getFieldDecorator("quantidade", {
+              rules: [
+                {
+                  required: true,
+                  message: "A quantidade deve ser informada"
+                }
+              ]
+            })(
+              <InputCustom
+                type="numeric"
+                decimalSeparator=","
+                decimalScale={3}
+                suffix=" un"
+                placeholder="Informe a quantidade"
+              />
+            )}
+          </Form.Item>
+
+          <Form.Item label="Preço" colon={false}>
+            {getFieldDecorator("preco", {
+              rules: [
+                {
+                  required: true,
+                  message: "O preço deve ser informado"
+                }
+              ]
+            })(
+              <InputCustom
+                prefix="R$"
+                thousandSeparator="."
+                decimalSeparator=","
+                decimalScale={2}
+                type="numeric"
+                placeholder="Informe o preço"
+              />
+            )}
+          </Form.Item>
 
           <Form.Item>
-            <InputCustom
-              label="Quantidade"
-              type="numeric"
-              decimalSeparator=","
-              decimalScale={3}
-              suffix="lt"
-              required
-              placeholder="Informe a quantidade"
-            />
-          </Form.Item>
-          <Form.Item>
-            <InputCustom
-              prefix="R$"
-              thousandSeparator="."
-              decimalSeparator=","
-              decimalScale={2}
-              type="numeric"
-              label="Preço"
-              required
-              placeholder="Informe o preço"
-            />
+            <Checkbox>Produto perecível</Checkbox>
           </Form.Item>
 
-          <Checkbox style={{ width: "100%", marginBottom: "24px" }}>
-            Produto perecível
-          </Checkbox>
-
-          <div
-            className="data-fabricacao"
+          <Form.Item
+            label="Data de fabricação"
+            colon={false}
             style={{
               width: "100%",
-              maxWidth: "350px",
-              marginRight: "25px"
+              maxWidth: "350px"
             }}
           >
-            <DatePicker
-              style={{ width: "100%", marginBottom: "24px" }}
-              onChange={""}
-              format={dateFormatList}
-              placeholder="Informe a data de fabricação"
-            />
-          </div>
+            {getFieldDecorator("data-fabricacao", {
+              rules: [
+                {
+                  required: true,
+                  message: "A data de fabricação deve ser informada."
+                }
+              ]
+            })(
+              <DatePicker
+                style={{ width: "100%" }}
+                format={dateFormatList}
+                placeholder="Informe a data de fabricação"
+              />
+            )}
+          </Form.Item>
 
-          <div
-            className="data-validade"
-            style={{ width: "100%", maxWidth: "350px" }}
+          <Form.Item
+            label="Data de validade"
+            colon={false}
+            style={{
+              width: "100%",
+              maxWidth: "350px"
+            }}
           >
-            <DatePicker
-              style={{ width: "100%", marginBottom: "24px" }}
-              onChange={""}
-              format={dateFormatList}
-              placeholder="Informe a data de validade"
-            />
+            {getFieldDecorator("data-validade", {
+              rules: [
+                {
+                  required: false,
+                  message: "A data de validade deve ser informada."
+                }
+              ]
+            })(
+              <DatePicker
+                style={{ width: "100%" }}
+                format={dateFormatList}
+                placeholder="Informe a data de validade"
+              />
+            )}
+          </Form.Item>
+
+          <div className="button-options">
+            <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+              Salvar
+            </Button>
+
+            <Button>Cancelar</Button>
           </div>
         </Form>
-
-        <div className="button-options">
-          <Button type="primary" htmlType="submit">
-            Salvar
-          </Button>
-          <Button>Cancelar</Button>
-        </div>
       </Card>
     </>
   );
-}
+});

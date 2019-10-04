@@ -6,6 +6,9 @@
   justify-content: center;
   height: -webkit-fill-available;
 }
+.ant-checkbox + span {
+  color: rgba(0, 0, 0, 0.85);
+}
 .button-options button {
   margin-right: 15px;
   margin-bottom: 5px;

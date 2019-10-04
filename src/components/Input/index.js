@@ -60,7 +60,7 @@ class Input extends React.Component {
       placeholder,
       format,
       prefix,
-      sufix,
+      suffix,
       decimalScale,
       decimalSeparator,
       thousandSeparator
@@ -75,7 +75,7 @@ class Input extends React.Component {
             decimalSeparator={decimalSeparator}
             format={format}
             prefix={prefix}
-            sufix={sufix}
+            suffix={suffix}
             thousandSeparator={thousandSeparator}
             placeholder={placeholder}
             value={this.state.value}
@@ -110,8 +110,8 @@ class Input extends React.Component {
       <React.Fragment>
         {label && (
           <label htmlFor={id}>
+            {required && <span className="label-required">* </span>}
             {label}
-            {required && <span className="label-required"> *</span>}
           </label>
         )}
         {this.getInput()}
