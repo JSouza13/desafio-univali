@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Form,
   Button,
@@ -10,7 +10,6 @@ import {
   Typography
 } from "antd";
 import InputCustom from "../../components/Input";
-
 import "./index.scss";
 
 const { Paragraph } = Typography;
@@ -19,56 +18,54 @@ export default Form.create({ name: "produto" })(
   ({ history, form, ...props }) => {
     document.title = "Desafio - Cadastro";
 
-    const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
+    const [descricao, setDescricao] = useState("");
+    const [unMedida, setUnMedida] = useState("un");
+    const [quantidade, setQuantidade] = useState();
+    const [preco, setPreco] = useState("");
+    const [perecivel, setPerecivel] = useState(false);
+    const [fabricacao, setFabricacao] = useState();
+    const [validade, setValidade] = useState();
 
-    const { Option } = Select;
+    const produto = {
+      descricao,
+      unMedida,
+      quantidade,
+      preco,
+      perecivel,
+      fabricacao,
+      validade
+    };
 
     function handleSubmit(event) {
       event.preventDefault();
       form.validateFields((err, values) => {
-        console.log(values.descricao);
+        if (!err) {
+          localStorage.setItem(produto.descricao, JSON.stringify(produto));
+          history.push("/relatorio");
+        }
       });
     }
+
+    function dataFabricacao(date) {
+      console.log("top...");
+      console.log(date.toDate());
+
+      setFabricacao(date.toDate());
+
+      console.log(date);
+    }
+
+    function dataValidade(date, dateString) {
+      setValidade(dateString.target.value);
+
+      console.log(date, dateString);
+    }
+
     const { getFieldDecorator } = form;
 
-    // const CreateUserLocal = ({ history, form, ...props }) => {
-    //   const [alteracao, setAlteracao] = useState(false);
-    //   const [produto, setProduto] = useState(new Produto());
-    //
+    const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
 
-    //   useEffect(() => {
-    //     getProduto(props.match.params.id).then(result => {
-    //       setProduto(new Produto(result.data));
-    //     });
-    //   }, [props.match.params.id]);
-
-    //   function handleSubmit(event) {
-    //     event.preventDefault();
-    //     form.validateFields((err, values) => {
-    //       if (!err) {
-    //         let obj = {
-    //           descricao: values.fullName,
-    //           login: values.login,
-    //           phone: values.phone.replace("_", ""),
-    //           mail: values.mail
-    //         };
-    //         if (props.match.params.id == null) {
-    //           createProduto(values).then(result => {
-    //             setAlteracao(false);
-    //             history.push("/cadastro");
-    //           });
-    //         } else {
-    //           let userToEdit = new Produto({
-    //             id: props.match.params.id,
-    //             ...obj
-    //           });
-    //           updateProduto(userToEdit).then(result => {
-    //             history.push("/cadastro");
-    //           });
-    //         }
-    //       }
-    //     });
-    //   }
+    const { Option } = Select;
 
     return (
       <>
@@ -90,13 +87,21 @@ export default Form.create({ name: "produto" })(
                     message: "Por favor, informe a descrição do item"
                   }
                 ]
-              })(<Input placeholder="Informe a descrição" />)}
+              })(
+                <Input
+                  placeholder="Informe a descrição"
+                  value={descricao}
+                  onChange={event => setDescricao(event.target.value)}
+                />
+              )}
             </Form.Item>
 
             <Form.Item label="Unidade de medida">
               <Select
                 defaultValue="un"
                 placeholder="Selecione a unidade de medida"
+                value={unMedida}
+                onChange={event => setUnMedida(event.target.value)}
               >
                 <Option value="un">Unidade</Option>
                 <Option value="lt">Litro</Option>
@@ -119,6 +124,8 @@ export default Form.create({ name: "produto" })(
                   decimalScale={3}
                   suffix=" un"
                   placeholder="Informe a quantidade"
+                  value={quantidade}
+                  onChange={event => setQuantidade(event.target.value)}
                 />
               )}
             </Form.Item>
@@ -139,6 +146,8 @@ export default Form.create({ name: "produto" })(
                   decimalScale={2}
                   type="numeric"
                   placeholder="Informe o preço"
+                  value={preco}
+                  onChange={event => setPreco(event.target.value)}
                 />
               )}
             </Form.Item>
@@ -167,6 +176,8 @@ export default Form.create({ name: "produto" })(
                   style={{ width: "100%" }}
                   format={dateFormatList}
                   placeholder="Informe a data de fabricação"
+                  value={fabricacao}
+                  onChange={date => dataFabricacao(date)}
                 />
               )}
             </Form.Item>
@@ -191,6 +202,8 @@ export default Form.create({ name: "produto" })(
                   style={{ width: "100%" }}
                   format={dateFormatList}
                   placeholder="Informe a data de validade"
+                  value={validade}
+                  // onChange={dataValidade}
                 />
               )}
             </Form.Item>
@@ -200,9 +213,7 @@ export default Form.create({ name: "produto" })(
                 Salvar
               </Button>
 
-              <Button onClick={() => this.props.history.push("/cadastro")}>
-                Cancelar
-              </Button>
+              <Button onClick={() => history.push("/")}>Cancelar</Button>
             </div>
           </Form>
         </Card>
