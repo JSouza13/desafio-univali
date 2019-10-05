@@ -1,8 +1,6 @@
 @import "../../assets/sass/configuration/colors.scss";
 
 .menu {
-  background: linear-gradient(#337ab7, #001529);
-
   & > div {
     display: flex;
     flex-direction: column;
@@ -10,43 +8,7 @@
     align-items: center;
   }
 
-  .user-area {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    height: 125px;
-    background: linear-gradient(120deg, #001529, #337ab7);
-
-    .logo {
-      height: 70px;
-      position: relative;
-      top: 0;
-      left: 0;
-      margin: 15px 15px 15px 15px;
-      background-repeat: repeat;
-      img {
-        margin: 10px;
-        &:hover {
-          transform: translateY(-5px);
-          transition: all 0.2s;
-        }
-      }
-    }
-    .ant-menu,
-    .ant-menu-submenu-title:active {
-      background: transparent;
-      outline: none;
-      border: none;
-    }
-
-    .ant-menu-submenu-arrow {
-      display: none;
-    }
-  }
-
   .menu-options {
-    display: flex;
     flex-direction: column;
     width: 100%;
     i {
@@ -55,7 +17,6 @@
     }
 
     .item {
-      display: flex;
       justify-content: start;
       align-items: center;
       margin: 14px;

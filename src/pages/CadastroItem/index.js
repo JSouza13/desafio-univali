@@ -1,18 +1,8 @@
 import React, { useState } from "react";
-import {
-  Form,
-  Button,
-  Checkbox,
-  DatePicker,
-  Select,
-  Input,
-  Card,
-  Typography
-} from "antd";
+import { Form, Button, Checkbox, DatePicker, Select, Input, Card } from "antd";
 import InputCustom from "../../components/Input";
 import "./index.scss";
-
-const { Paragraph } = Typography;
+import { statement } from "@babel/template";
 
 export default Form.create({ name: "produto" })(
   ({ history, form, ...props }) => {
@@ -40,30 +30,33 @@ export default Form.create({ name: "produto" })(
       event.preventDefault();
       form.validateFields((err, values) => {
         if (!err) {
-          localStorage.setItem(produto.descricao, JSON.stringify(produto));
+          window.localStorage.setItem(
+            produto.descricao,
+            JSON.stringify(produto)
+          );
           history.push("/relatorio");
         }
       });
     }
 
-    function dataFabricacao(date) {
-      console.log("top...");
+    function handleDataFabricacao(date) {
       console.log(date.toDate());
-
       setFabricacao(date.toDate());
-
-      console.log(date);
     }
 
-    function dataValidade(date, dateString) {
-      setValidade(dateString.target.value);
-
-      console.log(date, dateString);
+    function handleDataValidade(date) {
+      setValidade(date.toDate());
     }
+
+    function handleSelect(value) {
+      setUnMedida(value);
+    }
+
+    const handleCheck = e => {
+      setPerecivel(e.target.checked);
+    };
 
     const { getFieldDecorator } = form;
-
-    const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
 
     const { Option } = Select;
 
@@ -71,13 +64,18 @@ export default Form.create({ name: "produto" })(
       <>
         <Card
           title="Cadastro de novo item"
-          style={{ width: "100%", borderRadius: "24px", padding: "50px" }}
+          style={{
+            width: "100%",
+            borderRadius: "24px",
+            padding: "50px",
+            textSizeAdjust: "auto"
+          }}
         >
-          <Paragraph>
+          <p>
             Os campos marcados com asterisco (
             <span className="required">*</span>) são de preenchimento
             obrigatório.
-          </Paragraph>
+          </p>
           <Form>
             <Form.Item label="Descrição" colon={false}>
               {getFieldDecorator("descricao", {
@@ -90,7 +88,6 @@ export default Form.create({ name: "produto" })(
               })(
                 <Input
                   placeholder="Informe a descrição"
-                  value={descricao}
                   onChange={event => setDescricao(event.target.value)}
                 />
               )}
@@ -98,10 +95,10 @@ export default Form.create({ name: "produto" })(
 
             <Form.Item label="Unidade de medida">
               <Select
-                defaultValue="un"
+                defaultValue={unMedida}
                 placeholder="Selecione a unidade de medida"
                 value={unMedida}
-                onChange={event => setUnMedida(event.target.value)}
+                onChange={handleSelect}
               >
                 <Option value="un">Unidade</Option>
                 <Option value="lt">Litro</Option>
@@ -122,9 +119,8 @@ export default Form.create({ name: "produto" })(
                   type="numeric"
                   decimalSeparator=","
                   decimalScale={3}
-                  suffix=" un"
+                  suffix={unMedida}
                   placeholder="Informe a quantidade"
-                  value={quantidade}
                   onChange={event => setQuantidade(event.target.value)}
                 />
               )}
@@ -146,14 +142,15 @@ export default Form.create({ name: "produto" })(
                   decimalScale={2}
                   type="numeric"
                   placeholder="Informe o preço"
-                  value={preco}
                   onChange={event => setPreco(event.target.value)}
                 />
               )}
             </Form.Item>
 
             <Form.Item>
-              <Checkbox>Produto perecível</Checkbox>
+              <Checkbox checked={perecivel} onChange={handleCheck}>
+                Produto perecível
+              </Checkbox>
             </Form.Item>
 
             <Form.Item
@@ -164,7 +161,7 @@ export default Form.create({ name: "produto" })(
                 maxWidth: "350px"
               }}
             >
-              {getFieldDecorator("data-fabricacao", {
+              {getFieldDecorator("fabricacao", {
                 rules: [
                   {
                     required: true,
@@ -174,10 +171,9 @@ export default Form.create({ name: "produto" })(
               })(
                 <DatePicker
                   style={{ width: "100%" }}
-                  format={dateFormatList}
+                  format={"DD/MM/YYYY"}
                   placeholder="Informe a data de fabricação"
-                  value={fabricacao}
-                  onChange={date => dataFabricacao(date)}
+                  onChange={date => handleDataFabricacao(date)}
                 />
               )}
             </Form.Item>
@@ -190,20 +186,19 @@ export default Form.create({ name: "produto" })(
                 maxWidth: "350px"
               }}
             >
-              {getFieldDecorator("data-validade", {
+              {getFieldDecorator("validade", {
                 rules: [
                   {
-                    required: false,
+                    required: perecivel,
                     message: "A data de validade deve ser informada."
                   }
                 ]
               })(
                 <DatePicker
                   style={{ width: "100%" }}
-                  format={dateFormatList}
+                  format={"DD/MM/YYYY"}
                   placeholder="Informe a data de validade"
-                  value={validade}
-                  // onChange={dataValidade}
+                  onChange={date => handleDataValidade(date)}
                 />
               )}
             </Form.Item>

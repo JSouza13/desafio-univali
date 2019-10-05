@@ -1,15 +1,25 @@
 .main-template {
   min-height: 100vh;
 
-  .ant-layout-footer {
+  .user-area {
     display: flex;
+    width: 100%;
     align-items: center;
-    a {
-      display: flex;
-      color: inherit;
+    justify-content: center;
 
-      &:hover {
-        opacity: 0.6;
+    .logo {
+      height: 70px;
+      position: relative;
+      top: 0;
+      left: 0;
+      margin: 15px 15px 15px 15px;
+      background-repeat: repeat;
+      img {
+        margin: 10px;
+        &:hover {
+          transform: translateY(-5px);
+          transition: all 0.2s;
+        }
       }
     }
   }
