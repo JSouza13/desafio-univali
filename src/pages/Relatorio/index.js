@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { Table, Card, Button } from "antd";
 import { Link } from "react-router-dom";
-
+import "antd/dist/antd.css";
 import "./index.scss";
+
+function handleExcluir() {
+  window.localStorage.removeItem("");
+
+  window.location.reload();
+}
 
 const columns = [
   {
@@ -25,11 +31,11 @@ const columns = [
     dataIndex: "preco",
     key: "preco"
   },
-  {
-    title: "Produto perecível",
-    dataIndex: "perecivel",
-    key: "perecivel"
-  },
+  // {
+  //   title: "Produto perecível",
+  //   dataIndex: "perecivel",
+  //   key: "perecivel"
+  // },
   {
     title: "Data de fabricação",
     dataIndex: "fabricacao",
@@ -44,32 +50,25 @@ const columns = [
     title: "Ações",
     key: "acao",
     render: (text, record) => (
-      <span>
+      <span
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+      >
         <Button icon="edit" title="Editar" />
-        <Button icon="delete" title="Excluir" />
+        <Button icon="delete" title="Excluir" onClick={handleExcluir} />
       </span>
     )
   }
 ];
 
-const data = [
-  {
-    key: "1",
-    descricao: "Batata",
-    unMedida: "Quilograma",
-    quantidade: "10",
-    preco: "15,60",
-    perecivel: "sim",
-    fabricacao: "15/10/2019",
-    validade: "16/11/2019"
-  }
-];
+const data = [];
 
-function produto() {
-  for (let i = 0; i < localStorage.length; i++) {
-    let key = localStorage.key(i);
-    let value = JSON.parse(localStorage.getItem(key));
-  }
+for (let i = 0; i < localStorage.length; i++) {
+  let key = localStorage.key(i);
+  data.push(JSON.parse(localStorage.getItem(key)));
 }
 
 export default function CadastroItem() {
@@ -82,14 +81,16 @@ export default function CadastroItem() {
         style={{
           width: "100%",
           borderRadius: "24px",
-          padding: "50px",
+          padding: "25px",
           textSizeAdjust: "auto"
         }}
       >
         <Table
           columns={columns}
           dataSource={data}
-          style={{ margin: "15px", scrollMarginInline: "auto" }}
+          style={{
+            margin: "15px"
+          }}
         />
         <Link to="/cadastro">
           <Button type="primary" htmlType="submit">

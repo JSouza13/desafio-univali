@@ -1,8 +1,18 @@
 import React, { useState } from "react";
-import { Form, Button, Checkbox, DatePicker, Select, Input, Card } from "antd";
+import {
+  Form,
+  Button,
+  Checkbox,
+  DatePicker,
+  Select,
+  Input,
+  Card,
+  notification
+} from "antd";
+import moment from "moment";
 import InputCustom from "../../components/Input";
 import "./index.scss";
-import { statement } from "@babel/template";
+import { createDidYouMeanMessage } from "jest-validate/build/utils";
 
 export default Form.create({ name: "produto" })(
   ({ history, form, ...props }) => {
@@ -10,11 +20,11 @@ export default Form.create({ name: "produto" })(
 
     const [descricao, setDescricao] = useState("");
     const [unMedida, setUnMedida] = useState("un");
-    const [quantidade, setQuantidade] = useState();
+    const [quantidade, setQuantidade] = useState("");
     const [preco, setPreco] = useState("");
     const [perecivel, setPerecivel] = useState(false);
-    const [fabricacao, setFabricacao] = useState();
-    const [validade, setValidade] = useState();
+    const [fabricacao, setFabricacao] = useState(null);
+    const [validade, setValidade] = useState(null);
 
     const produto = {
       descricao,
@@ -30,22 +40,53 @@ export default Form.create({ name: "produto" })(
       event.preventDefault();
       form.validateFields((err, values) => {
         if (!err) {
-          window.localStorage.setItem(
-            produto.descricao,
-            JSON.stringify(produto)
+          const dataAtual = moment().format("DD/MM/YYYY");
+
+          if (validade < dataAtual) {
+            notification.warning(
+              {
+                key: "warning",
+                message: "Atenção",
+                description: "O produto encontra-se vencido"
+              },
+              1000
+            );
+          } else if (validade !== null && fabricacao > validade) {
+            notification.warning(
+              {
+                key: "warning",
+                message: "Atenção",
+                description:
+                  "A data de fabricação não pode ser maior que a de validade"
+              },
+              1000
+            );
+          } else {
+            window.localStorage.setItem(
+              produto.descricao,
+              JSON.stringify(produto)
+            );
+            notification.success(
+              {
+                key: "success",
+                message: "Produto cadastrado"
+              },
+              1000
+            );
+
+            history.push("/relatorio");
+          }
+        } else {
+          notification.error(
+            {
+              key: "error",
+              message: "Campos obrigatórios",
+              description: "Todos os campos obrigatórios devem ser preenchidos"
+            },
+            1000
           );
-          history.push("/relatorio");
         }
       });
-    }
-
-    function handleDataFabricacao(date) {
-      console.log(date.toDate());
-      setFabricacao(date.toDate());
-    }
-
-    function handleDataValidade(date) {
-      setValidade(date.toDate());
     }
 
     function handleSelect(value) {
@@ -87,6 +128,7 @@ export default Form.create({ name: "produto" })(
                 ]
               })(
                 <Input
+                  maxLength="50"
                   placeholder="Informe a descrição"
                   onChange={event => setDescricao(event.target.value)}
                 />
@@ -118,7 +160,7 @@ export default Form.create({ name: "produto" })(
                 <InputCustom
                   type="numeric"
                   decimalSeparator=","
-                  decimalScale={3}
+                  decimalScale={unMedida === "un" ? 0 : 3}
                   suffix={unMedida}
                   placeholder="Informe a quantidade"
                   onChange={event => setQuantidade(event.target.value)}
@@ -154,6 +196,33 @@ export default Form.create({ name: "produto" })(
             </Form.Item>
 
             <Form.Item
+              label="Data de validade"
+              colon={false}
+              style={{
+                width: "100%",
+                maxWidth: "350px"
+              }}
+            >
+              {getFieldDecorator("validade", {
+                rules: [
+                  {
+                    required: perecivel,
+                    message: "A data de validade deve ser informada."
+                  }
+                ]
+              })(
+                <DatePicker
+                  style={{ width: "100%" }}
+                  allowClear={false}
+                  disabled={!perecivel}
+                  format={"DD/MM/YYYY"}
+                  placeholder="Informe a data de validade"
+                  onChange={(date, dateString) => setValidade(dateString)}
+                />
+              )}
+            </Form.Item>
+
+            <Form.Item
               label="Data de fabricação"
               colon={false}
               style={{
@@ -173,32 +242,7 @@ export default Form.create({ name: "produto" })(
                   style={{ width: "100%" }}
                   format={"DD/MM/YYYY"}
                   placeholder="Informe a data de fabricação"
-                  onChange={date => handleDataFabricacao(date)}
-                />
-              )}
-            </Form.Item>
-
-            <Form.Item
-              label="Data de validade"
-              colon={false}
-              style={{
-                width: "100%",
-                maxWidth: "350px"
-              }}
-            >
-              {getFieldDecorator("validade", {
-                rules: [
-                  {
-                    required: perecivel,
-                    message: "A data de validade deve ser informada."
-                  }
-                ]
-              })(
-                <DatePicker
-                  style={{ width: "100%" }}
-                  format={"DD/MM/YYYY"}
-                  placeholder="Informe a data de validade"
-                  onChange={date => handleDataValidade(date)}
+                  onChange={(date, dateString) => setFabricacao(dateString)}
                 />
               )}
             </Form.Item>
