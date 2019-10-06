@@ -13,10 +13,6 @@ export default ({ history, form, ...props }) => {
     async function loadProdutos() {
       const response = await produtoService.ListProduct();
       setProduto(response);
-
-      const keyProdutos = await Object.keys(localStorage);
-
-      console.log(keyProdutos);
     }
     loadProdutos();
   }, []);
