@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Card, Button, notification, Modal } from "antd";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
@@ -9,55 +9,21 @@ import produtoService from "../../services/produtos";
 export default ({ history, form, ...props }) => {
   document.title = "Desafio - Relatório";
 
-  const [produto, setProduto] = useState({});
+  useEffect(() => {
+    async function loadProdutos() {
+      const response = await produtoService.ListProduct();
+      setProduto(response);
 
-  function callDelete(produto) {
-    var encodedData = btoa(
-      unescape(
-        encodeURIComponent(
-          produto.id +
-            produto.descricao +
-            produto.quantidade +
-            produto.unMedida +
-            produto.preco +
-            produto.perecivel +
-            produto.validade
-        )
-      )
-    );
+      const keyProdutos = await Object.keys(localStorage);
 
-    Modal.confirm({
-      title: `Excluir o produto "${produto.descricao}"`,
-      content: `Você tem certeza que deseja excluir esse produto?`,
-      okText: "Excluir produto",
-      cancelText: "Cancelar",
-      onOk() {
-        handleExcluir(produto, encodedData);
-      },
-      onCancel() {}
-    });
-  }
+      console.log(keyProdutos);
+    }
+    loadProdutos();
+  }, []);
 
-  function handleExcluir(produto, value) {
-    produtoService.deleteProductById(value);
+  const [produto, setProduto] = useState([]);
 
-    notification.success(
-      {
-        key: "success",
-        message: "Sucesso",
-        description: `O produto "${produto.descricao}" foi excluído`
-      },
-      1000
-    );
-    history.push("/produto");
-  }
-
-  const data = [];
-
-  for (let i = 0; i < localStorage.length; i++) {
-    let key = localStorage.key(i);
-    data.push(JSON.parse(localStorage.getItem(key)));
-  }
+  const data = produto;
 
   const columns = [
     {
@@ -146,6 +112,65 @@ export default ({ history, form, ...props }) => {
       )
     }
   ];
+
+  function callDelete(produto) {
+    var encodedData = btoa(
+      unescape(
+        encodeURIComponent(
+          produto.id +
+            produto.descricao +
+            produto.quantidade +
+            produto.unMedida +
+            produto.preco +
+            produto.perecivel +
+            produto.validade
+        )
+      )
+    );
+
+    Modal.confirm({
+      title: `Excluir o produto "${produto.descricao}"`,
+      content: `Você tem certeza que deseja excluir esse produto?`,
+      okText: "Excluir produto",
+      cancelText: "Cancelar",
+      onOk() {
+        handleExcluir(produto, encodedData);
+      },
+      onCancel() {}
+    });
+  }
+
+  function handleExcluir(produto, value) {
+    produtoService.deleteProductById(value);
+
+    notification.success(
+      {
+        key: "success",
+        message: "Sucesso",
+        description: `O produto "${produto.descricao}" foi excluído`
+      },
+      1000
+    );
+    history.push("/produto");
+  }
+
+  function handleEditar(produto) {
+    var encodedData = btoa(
+      unescape(
+        encodeURIComponent(
+          produto.id +
+            produto.descricao +
+            produto.quantidade +
+            produto.unMedida +
+            produto.preco +
+            produto.perecivel +
+            produto.validade
+        )
+      )
+    );
+
+    console.log(produtoService.ListProduct());
+  }
 
   return (
     <>

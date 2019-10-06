@@ -3,14 +3,14 @@ import { Switch, Route } from "react-router-dom";
 
 import Pages from "../pages";
 
-const { Cadastro, Relatorio } = Pages;
+const { Cadastro, Relatorio, Editar } = Pages;
 
 export default function Routes() {
   return (
     <Switch>
       <Route exact path="/" component={Relatorio} />
       <Route exact path="/produto" component={Relatorio} />
-      <Route exact path="/produtos/editar/:id" component={Cadastro} />
+      <Route exact path="/produtos/editar/:key" component={Editar} />
       <Route path="/cadastro" component={Cadastro} />
     </Switch>
   );

@@ -16,30 +16,22 @@ import "./index.scss";
 import produtoService from "../../services/produtos";
 
 export default Form.create({ name: "produto" })(
-  ({ history, form, ...props }) => {
+  ({ history, form, match, ...props }) => {
     document.title = "Desafio - Cadastro";
 
-    useEffect(() => {
-      async function loadProdutos() {
-        const response = await Object.keys(localStorage);
-      }
-      loadProdutos();
-    }, []);
+    const id = match.params.id;
+    const [descricao, setDescricao] = useState(id.descricao);
+    const [unMedida, setUnMedida] = useState(id.unMedida);
+    const [quantidade, setQuantidade] = useState(id.quantidade);
+    const [preco, setPreco] = useState(id.preco);
+    const [perecivel, setPerecivel] = useState(id.perecivel);
+    const [fabricacao, setFabricacao] = useState(id.fabricacao);
+    const [validade, setValidade] = useState(id.validade);
 
-    const [descricao, setDescricao] = useState("");
-    const [unMedida, setUnMedida] = useState("un");
-    const [quantidade, setQuantidade] = useState("");
-    const [preco, setPreco] = useState("");
-    const [perecivel, setPerecivel] = useState("Não");
-    const [fabricacao, setFabricacao] = useState(null);
-    const [validade, setValidade] = useState(null);
-
-    var id = 0;
-    id = localStorage.length + 1;
     let encodedData = btoa(
       unescape(
         encodeURIComponent(
-          id + descricao + quantidade + unMedida + preco + perecivel + validade
+          descricao + quantidade + unMedida + preco + perecivel + validade
         )
       )
     );
@@ -147,6 +139,7 @@ export default Form.create({ name: "produto" })(
                 <Input
                   maxLength={50}
                   placeholder="Informe a descrição"
+                  defaultValue={descricao}
                   onChange={event => setDescricao(event.target.value)}
                 />
               )}
@@ -175,6 +168,7 @@ export default Form.create({ name: "produto" })(
                 ]
               })(
                 <InputCustom
+                  defaultValue={quantidade}
                   type="numeric"
                   decimalSeparator=","
                   decimalScale={unMedida === "un" ? 0 : 3}
@@ -195,6 +189,7 @@ export default Form.create({ name: "produto" })(
                 ]
               })(
                 <InputCustom
+                  defaultValue={preco}
                   prefix="R$"
                   thousandSeparator="."
                   decimalSeparator=","
@@ -208,6 +203,7 @@ export default Form.create({ name: "produto" })(
 
             <Form.Item>
               <Checkbox
+                defaultValue={perecivel === "Sim" ? true : false}
                 checked={perecivel === "Sim" ? true : false}
                 onChange={handleCheck}
               >
@@ -232,6 +228,7 @@ export default Form.create({ name: "produto" })(
                 ]
               })(
                 <DatePicker
+                  defaultValue={validade}
                   style={{ width: "100%" }}
                   allowClear={false}
                   disabled={perecivel === "Não" ? true : false}
@@ -259,6 +256,7 @@ export default Form.create({ name: "produto" })(
                 ]
               })(
                 <DatePicker
+                  defaultValue={fabricacao}
                   style={{ width: "100%" }}
                   format={"DD/MM/YYYY"}
                   placeholder="Informe a data de fabricação"

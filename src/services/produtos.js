@@ -1,3 +1,18 @@
+const ListProduct = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+        data.push(JSON.parse(localStorage.getItem(key)));
+      }
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 const newProduct = (hash, product) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -32,6 +47,7 @@ const putProduct = (hash, product) => {
 };
 
 const productService = {
+  ListProduct,
   newProduct,
   deleteProductById,
   putProduct
