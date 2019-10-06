@@ -9,7 +9,8 @@ export default function Routes() {
   return (
     <Switch>
       <Route exact path="/" component={Relatorio} />
-      <Route path="/relatorio" component={Relatorio} />
+      <Route exact path="/produto" component={Relatorio} />
+      <Route exact path="/produtos/editar/:id" component={Cadastro} />
       <Route path="/cadastro" component={Cadastro} />
     </Switch>
   );

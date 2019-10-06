@@ -13,6 +13,8 @@ import moment from "moment";
 import InputCustom from "../../components/Input";
 import "./index.scss";
 
+import produtoService from "../../services/produtos";
+
 export default Form.create({ name: "produto" })(
   ({ history, form, ...props }) => {
     document.title = "Desafio - Cadastro";
@@ -22,8 +24,8 @@ export default Form.create({ name: "produto" })(
     const [quantidade, setQuantidade] = useState("");
     const [preco, setPreco] = useState("");
     const [perecivel, setPerecivel] = useState("Não");
-    const [fabricacao, setFabricacao] = useState(null);
-    const [validade, setValidade] = useState(null);
+    const [fabricacao, setFabricacao] = useState("");
+    const [validade, setValidade] = useState("");
 
     var id = 0;
     id = localStorage.length + 1;
@@ -72,8 +74,7 @@ export default Form.create({ name: "produto" })(
               1000
             );
           } else {
-            console.log(encodedData);
-            localStorage.setItem(encodedData, JSON.stringify(produto));
+            produtoService.newProduct(encodedData, produto);
 
             notification.success(
               {
@@ -83,7 +84,7 @@ export default Form.create({ name: "produto" })(
               1000
             );
 
-            history.push("/relatorio");
+            history.push("/produto");
           }
         } else {
           notification.error(
@@ -115,7 +116,7 @@ export default Form.create({ name: "produto" })(
         <Card
           title="Cadastro de produto"
           style={{
-            maxWidth: "960px",
+            maxWidth: "max-content",
             borderRadius: "24px",
             fontSize: "16px",
             height: "max-content"

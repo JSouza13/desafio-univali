@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./index.scss";
 
+import produtoService from "../../services/produtos";
+
 export default ({ history, form, ...props }) => {
   document.title = "Desafio - Relatório";
 
-  function callDelete(produto) {
-    console.log("callDelete", localStorage.length);
-    console.log("callDelete 2", produto);
+  const [produto, setProduto] = useState({});
 
+  function callDelete(produto) {
     var encodedData = btoa(
       unescape(
         encodeURIComponent(
@@ -25,10 +26,8 @@ export default ({ history, form, ...props }) => {
       )
     );
 
-    console.log("encodedData", encodedData);
-
     Modal.confirm({
-      title: `Excluir o produto ${produto.descricao}`,
+      title: `Excluir o produto "${produto.descricao}"`,
       content: `Você tem certeza que deseja excluir esse produto?`,
       okText: "Excluir produto",
       cancelText: "Cancelar",
@@ -40,20 +39,21 @@ export default ({ history, form, ...props }) => {
   }
 
   function handleExcluir(produto, value) {
-    window.localStorage.removeItem(value);
+    produtoService.deleteProductById(value);
 
     notification.success(
       {
         key: "success",
         message: "Sucesso",
-        description: `O produto ${produto.descricao} foi excluído`
+        description: `O produto "${produto.descricao}" foi excluído`
       },
       1000
     );
-    history.push("/relatorio");
+    history.push("/produto");
   }
 
   const data = [];
+
   for (let i = 0; i < localStorage.length; i++) {
     let key = localStorage.key(i);
     data.push(JSON.parse(localStorage.getItem(key)));
@@ -108,7 +108,33 @@ export default ({ history, form, ...props }) => {
             justifyContent: "space-between"
           }}
         >
-          <Button icon="edit" title="Editar" />
+          <Link
+            to={
+              "/produto/editar/" +
+              btoa(
+                unescape(
+                  encodeURIComponent(
+                    record.id +
+                      record.descricao +
+                      record.quantidade +
+                      record.unMedida +
+                      record.preco +
+                      record.perecivel +
+                      record.validade
+                  )
+                )
+              )
+            }
+          >
+            {" "}
+            <Button
+              icon="edit"
+              title="Editar"
+              onClick={() => {
+                setProduto(record);
+              }}
+            />
+          </Link>
           <Button
             onClick={() => {
               callDelete(record);
@@ -126,7 +152,7 @@ export default ({ history, form, ...props }) => {
       <Card
         title="Produtos cadastrados"
         style={{
-          maxWidth: "960px",
+          maxWidth: "max-content",
           borderRadius: "24px",
           fontSize: "16px",
           height: "max-content"

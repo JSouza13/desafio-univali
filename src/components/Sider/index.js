@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./index.scss";
 const { Sider } = Layout;
 
-export default ({ ...props }) => {
+export default ({ history, form, ...props }) => {
   return (
     <Sider
       className="menu"
@@ -25,7 +25,7 @@ export default ({ ...props }) => {
             </div>
           </Tooltip>
         </Link>
-        <Link to="/relatorio">
+        <Link to="/produto">
           <Tooltip title="Relatório" placement="right">
             <div className="item" style={{ color: "black" }}>
               <Icon type="snippets" style={{ color: "black" }} />

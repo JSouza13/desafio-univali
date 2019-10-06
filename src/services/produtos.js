@@ -1,32 +1,7 @@
-function handleSubmit(event) {
-  event.preventDefault();
-  form.validateFields((err, values) => {
-    if (!err) {
-      localStorage.setItem(produto.descricao, JSON.stringify(produto));
-      history.push("/relatorio");
-    }
-  });
-}
-
-const getGroups = () => {
+const newProduct = (hash, product) => {
   return new Promise(async (resolve, reject) => {
     try {
-      for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        let value = JSON.parse(localStorage.getItem(key));
-      }
-      let produtos = value.getAllGroup();
-      resolve(groups);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
-const newGroup = group => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let result = await Api.groupPostWithUsers(group);
+      let result = await localStorage.setItem(hash, JSON.stringify(product));
       resolve(result);
     } catch (error) {
       reject(error);
@@ -34,10 +9,10 @@ const newGroup = group => {
   });
 };
 
-const deleteGroupById = id => {
+const deleteProductById = id => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await Api.deleteGroup(id);
+      let result = await window.localStorage.removeItem(id);
       resolve(result);
     } catch (error) {
       reject(error);
@@ -45,10 +20,10 @@ const deleteGroupById = id => {
   });
 };
 
-const putGroup = group => {
+const putProduct = (hash, product) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let result = await Api.groupPutWithUsers(group);
+      let result = await localStorage.setItem(hash, JSON.stringify(product));
       resolve(result);
     } catch (error) {
       reject(error);
@@ -56,13 +31,9 @@ const putGroup = group => {
   });
 };
 
-const groupService = {
-  getGroups,
-  newGroup,
-  deleteGroupById,
-  searchGroupById,
-  getGroupsFromPage,
-  getAvailableGroups,
-  putGroup
+const productService = {
+  newProduct,
+  deleteProductById,
+  putProduct
 };
-export default groupService;
+export default productService;
