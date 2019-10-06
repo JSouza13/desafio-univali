@@ -23,19 +23,20 @@ export default ({ history, form, ...props }) => {
       okText: "Excluir produto",
       cancelText: "Cancelar",
       onOk() {
-        handleExcluir(encodedData);
+        handleExcluir(produto, encodedData);
       },
       onCancel() {}
     });
   }
 
-  function handleExcluir(value) {
+  function handleExcluir(produto, value) {
     window.localStorage.removeItem(value);
 
     notification.success(
       {
         key: "success",
-        message: "Produto removido"
+        message: "Sucesso",
+        description: `O produto ${produto.descricao} foi excluído`
       },
       1000
     );
