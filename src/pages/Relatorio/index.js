@@ -12,7 +12,17 @@ export default ({ history, form, ...props }) => {
     console.log("callDelete 2", produto);
 
     var encodedData = btoa(
-      unescape(encodeURIComponent(produto.id, produto.descricao))
+      unescape(
+        encodeURIComponent(
+          produto.id +
+            produto.descricao +
+            produto.quantidade +
+            produto.unMedida +
+            produto.preco +
+            produto.perecivel +
+            produto.validade
+        )
+      )
     );
 
     console.log("encodedData", encodedData);

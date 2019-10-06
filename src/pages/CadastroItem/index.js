@@ -27,6 +27,13 @@ export default Form.create({ name: "produto" })(
 
     var id = 0;
     id = localStorage.length + 1;
+    var encodedData = btoa(
+      unescape(
+        encodeURIComponent(
+          id + descricao + quantidade + unMedida + preco + perecivel + validade
+        )
+      )
+    );
 
     const produto = {
       id,
@@ -65,8 +72,7 @@ export default Form.create({ name: "produto" })(
               1000
             );
           } else {
-            var encodedData = btoa(unescape(encodeURIComponent(id, descricao)));
-
+            console.log(encodedData);
             localStorage.setItem(encodedData, JSON.stringify(produto));
 
             notification.success(
@@ -145,9 +151,9 @@ export default Form.create({ name: "produto" })(
                 value={unMedida}
                 onChange={handleSelect}
               >
-                <Option value="un">Unidade</Option>
-                <Option value="lt">Litro</Option>
-                <Option value="kg">Quilograma</Option>
+                <Option value="un">Unidade (un)</Option>
+                <Option value="lt">Litro (lt)</Option>
+                <Option value="kg">Quilograma (kg)</Option>
               </Select>
             </Form.Item>
 
