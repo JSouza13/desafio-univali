@@ -25,7 +25,11 @@ export default Form.create({ name: "produto" })(
     const [fabricacao, setFabricacao] = useState(null);
     const [validade, setValidade] = useState(null);
 
+    var id = 0;
+    id = localStorage.length + 1;
+
     const produto = {
+      id,
       descricao,
       unMedida,
       quantidade,
@@ -61,9 +65,9 @@ export default Form.create({ name: "produto" })(
               1000
             );
           } else {
-            var key = localStorage.length;
-            key++;
-            window.localStorage.setItem(key, JSON.stringify(produto));
+            var encodedData = btoa(unescape(encodeURIComponent(id, descricao)));
+
+            localStorage.setItem(encodedData, JSON.stringify(produto));
 
             notification.success(
               {
@@ -127,7 +131,7 @@ export default Form.create({ name: "produto" })(
                 ]
               })(
                 <Input
-                  maxLength="50"
+                  maxLength={50}
                   placeholder="Informe a descrição"
                   onChange={event => setDescricao(event.target.value)}
                 />

@@ -1,14 +1,36 @@
 import React, { useState } from "react";
-import { Table, Card, Button, notification } from "antd";
+import { Table, Card, Button, notification, Modal } from "antd";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./index.scss";
 
 export default ({ history, form, ...props }) => {
-  document.title = "Desafio - Listagem";
+  document.title = "Desafio - Relatório";
+
+  function callDelete(produto) {
+    console.log("callDelete", localStorage.length);
+    console.log("callDelete 2", produto);
+
+    var encodedData = btoa(
+      unescape(encodeURIComponent(produto.id, produto.descricao))
+    );
+
+    console.log("encodedData", encodedData);
+
+    Modal.confirm({
+      title: `Excluir o produto ${produto.descricao}`,
+      content: `Você tem certeza que deseja excluir esse produto?`,
+      okText: "Excluir produto",
+      cancelText: "Cancelar",
+      onOk() {
+        handleExcluir(encodedData);
+      },
+      onCancel() {}
+    });
+  }
 
   function handleExcluir(value) {
-    localStorage.removeItem(localStorage.key(value));
+    window.localStorage.removeItem(value);
 
     notification.success(
       {
@@ -18,8 +40,6 @@ export default ({ history, form, ...props }) => {
       1000
     );
     history.push("/relatorio");
-
-    //window.location.reload(true);
   }
 
   const data = [];
@@ -78,7 +98,13 @@ export default ({ history, form, ...props }) => {
           }}
         >
           <Button icon="edit" title="Editar" />
-          <Button icon="delete" title="Excluir" onClick={handleExcluir} />
+          <Button
+            onClick={() => {
+              callDelete(record);
+            }}
+            icon="delete"
+            title="Excluir"
+          />
         </span>
       )
     }
@@ -87,7 +113,7 @@ export default ({ history, form, ...props }) => {
   return (
     <>
       <Card
-        title="Itens cadastrados"
+        title="Produtos cadastrados"
         style={{
           maxWidth: "960px",
           borderRadius: "24px",
