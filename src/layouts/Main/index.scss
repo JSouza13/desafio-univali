@@ -24,3 +24,10 @@
     }
   }
 }
+
+@media (max-width: 992px) {
+  span.ant-layout-sider-zero-width-trigger.ant-layout-sider-zero-width-trigger-left {
+    position: fixed;
+    left: 0;
+  }
+}

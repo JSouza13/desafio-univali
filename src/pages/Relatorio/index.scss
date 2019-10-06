@@ -1,12 +1,25 @@
-.formulario-cadastro {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  height: -webkit-fill-available;
+.ant-card.ant-card-bordered {
+  padding: 50px;
+  overflow-x: hidden;
 }
+
 .button-options button {
   margin-right: 15px;
   margin-bottom: 5px;
+}
+
+@media (max-width: 460px) {
+  .ant-card.ant-card-bordered {
+    padding: 10px;
+  }
+
+  .button-options {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+@media (max-width: 992px) {
+  .ant-card.ant-card-bordered {
+    overflow-x: scroll;
+  }
 }

@@ -12,7 +12,6 @@ import {
 import moment from "moment";
 import InputCustom from "../../components/Input";
 import "./index.scss";
-import { createDidYouMeanMessage } from "jest-validate/build/utils";
 
 export default Form.create({ name: "produto" })(
   ({ history, form, ...props }) => {
@@ -22,7 +21,7 @@ export default Form.create({ name: "produto" })(
     const [unMedida, setUnMedida] = useState("un");
     const [quantidade, setQuantidade] = useState("");
     const [preco, setPreco] = useState("");
-    const [perecivel, setPerecivel] = useState(false);
+    const [perecivel, setPerecivel] = useState("Não");
     const [fabricacao, setFabricacao] = useState(null);
     const [validade, setValidade] = useState(null);
 
@@ -62,10 +61,10 @@ export default Form.create({ name: "produto" })(
               1000
             );
           } else {
-            window.localStorage.setItem(
-              produto.descricao,
-              JSON.stringify(produto)
-            );
+            var key = localStorage.length;
+            key++;
+            window.localStorage.setItem(key, JSON.stringify(produto));
+
             notification.success(
               {
                 key: "success",
@@ -94,7 +93,7 @@ export default Form.create({ name: "produto" })(
     }
 
     const handleCheck = e => {
-      setPerecivel(e.target.checked);
+      setPerecivel(e.target.checked ? "Sim" : "Não");
     };
 
     const { getFieldDecorator } = form;
@@ -104,12 +103,12 @@ export default Form.create({ name: "produto" })(
     return (
       <>
         <Card
-          title="Cadastro de novo item"
+          title="Cadastro de produto"
           style={{
-            width: "100%",
+            maxWidth: "960px",
             borderRadius: "24px",
-            padding: "50px",
-            textSizeAdjust: "auto"
+            fontSize: "16px",
+            height: "max-content"
           }}
         >
           <p>
@@ -190,7 +189,10 @@ export default Form.create({ name: "produto" })(
             </Form.Item>
 
             <Form.Item>
-              <Checkbox checked={perecivel} onChange={handleCheck}>
+              <Checkbox
+                checked={perecivel === "Sim" ? true : false}
+                onChange={handleCheck}
+              >
                 Produto perecível
               </Checkbox>
             </Form.Item>
@@ -206,7 +208,7 @@ export default Form.create({ name: "produto" })(
               {getFieldDecorator("validade", {
                 rules: [
                   {
-                    required: perecivel,
+                    required: perecivel === "Sim" ? true : false,
                     message: "A data de validade deve ser informada."
                   }
                 ]
@@ -214,7 +216,7 @@ export default Form.create({ name: "produto" })(
                 <DatePicker
                   style={{ width: "100%" }}
                   allowClear={false}
-                  disabled={!perecivel}
+                  disabled={perecivel === "Não" ? true : false}
                   format={"DD/MM/YYYY"}
                   placeholder="Informe a data de validade"
                   onChange={(date, dateString) => setValidade(dateString)}

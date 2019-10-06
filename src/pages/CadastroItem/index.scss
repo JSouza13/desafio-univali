@@ -1,10 +1,13 @@
 .formulario-cadastro {
-  align-items: center;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  height: -webkit-fill-available;
+}
+.ant-card-head-title {
+  font-size: 24px;
+}
+.ant-card.ant-card-bordered {
+  padding: 50px;
 }
 .ant-checkbox + span {
   color: rgba(0, 0, 0, 0.85);
@@ -31,4 +34,21 @@
   font-size: 14px;
   font-family: SimSun, sans-serif;
   line-height: 1;
+}
+
+@media (max-width: 460px) {
+  .ant-card.ant-card-bordered {
+    padding: 10px;
+  }
+
+  .button-options {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 800px) {
+  .ant-card.ant-card-bordered {
+    padding: 20px;
+  }
 }

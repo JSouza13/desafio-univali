@@ -8,10 +8,13 @@ export default ({ ...props }) => {
   return (
     <Sider
       className="menu"
-      width={180}
       collapsedWidth="0"
       breakpoint="lg"
-      style={{ background: "#fff" }}
+      style={{
+        marginTop: "90px",
+        left: 0,
+        background: "#EAF2F8"
+      }}
     >
       <div className="menu-options">
         <Link to="/cadastro">

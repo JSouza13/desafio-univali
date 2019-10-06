@@ -14,11 +14,12 @@ export default ({ children, ...props }) => {
     <Layout className="main-template">
       <Header
         style={{
-          height: "125px",
+          height: "90px",
+          position: "fixed",
+          zIndex: 1,
+          width: "100%",
           background:
             "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)"
-
-          // background: "linear-gradient(180deg, #001529 , #337ab7)"
         }}
       >
         <div className="user-area">
@@ -37,7 +38,15 @@ export default ({ children, ...props }) => {
       <Layout>
         <Sider />
         <Layout>
-          <Content style={{ padding: "15px", background: "#E0E1E4" }}>
+          <Content
+            style={{
+              padding: "50px",
+              marginTop: "90px",
+              background: "#D4E6F1",
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
             <MainRoutes />
           </Content>
         </Layout>

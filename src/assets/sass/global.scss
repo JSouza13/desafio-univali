@@ -15,4 +15,5 @@ tspan {
 
 body {
   background-color: $cor-fundo;
+  -webkit-font-smoothing: antialiased !important;
 }
