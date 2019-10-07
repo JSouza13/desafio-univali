@@ -16,27 +16,27 @@ import "./index.scss";
 import produtoService from "../../services/produtos";
 
 export default Form.create({ name: "produto" })(
-  ({ history, form, match, ...props }) => {
+  ({ history, form, ...props }) => {
     document.title = "Desafio - Cadastro";
 
-    const id = match.params.id;
-    const [descricao, setDescricao] = useState(id.descricao);
-    const [unMedida, setUnMedida] = useState(id.unMedida);
-    const [quantidade, setQuantidade] = useState(id.quantidade);
-    const [preco, setPreco] = useState(id.preco);
-    const [perecivel, setPerecivel] = useState(id.perecivel);
-    const [fabricacao, setFabricacao] = useState(id.fabricacao);
-    const [validade, setValidade] = useState(id.validade);
+    useEffect(() => {
+      console.log("caiu aqui", props.match.params.key);
+    }, []);
 
-    let encodedData = btoa(
-      unescape(
-        encodeURIComponent(
-          descricao + quantidade + unMedida + preco + perecivel + validade
-        )
-      )
-    );
+    const hash = props.match.params.key;
 
-    const produto = {
+    const produto = JSON.parse(localStorage.getItem(hash));
+
+    const [id, setId] = useState(produto.id);
+    const [descricao, setDescricao] = useState(produto.descricao);
+    const [unMedida, setUnMedida] = useState(produto.unMedida);
+    const [quantidade, setQuantidade] = useState(produto.quantidade);
+    const [preco, setPreco] = useState(produto.preco);
+    const [perecivel, setPerecivel] = useState(produto.perecivel);
+    const [fabricacao, setFabricacao] = useState(produto.fabricacao);
+    const [validade, setValidade] = useState(produto.validade);
+
+    const produtoEditado = {
       id,
       descricao,
       unMedida,
@@ -48,6 +48,12 @@ export default Form.create({ name: "produto" })(
     };
 
     function handleSubmit(event) {
+      console.log("1", produto);
+      console.log("2", produto.descricao);
+
+      console.log("3", produtoEditado);
+      console.log("4", produtoEditado.descricao);
+
       event.preventDefault();
       form.validateFields((err, values) => {
         if (!err) {
@@ -73,7 +79,7 @@ export default Form.create({ name: "produto" })(
               1000
             );
           } else {
-            produtoService.newProduct(encodedData, produto);
+            produtoService.putProduct(hash, produtoEditado);
 
             notification.success(
               {
@@ -139,7 +145,6 @@ export default Form.create({ name: "produto" })(
                 <Input
                   maxLength={50}
                   placeholder="Informe a descrição"
-                  defaultValue={descricao}
                   onChange={event => setDescricao(event.target.value)}
                 />
               )}
@@ -168,7 +173,6 @@ export default Form.create({ name: "produto" })(
                 ]
               })(
                 <InputCustom
-                  defaultValue={quantidade}
                   type="numeric"
                   decimalSeparator=","
                   decimalScale={unMedida === "un" ? 0 : 3}
@@ -189,7 +193,6 @@ export default Form.create({ name: "produto" })(
                 ]
               })(
                 <InputCustom
-                  defaultValue={preco}
                   prefix="R$"
                   thousandSeparator="."
                   decimalSeparator=","
@@ -203,7 +206,6 @@ export default Form.create({ name: "produto" })(
 
             <Form.Item>
               <Checkbox
-                defaultValue={perecivel === "Sim" ? true : false}
                 checked={perecivel === "Sim" ? true : false}
                 onChange={handleCheck}
               >
@@ -228,7 +230,6 @@ export default Form.create({ name: "produto" })(
                 ]
               })(
                 <DatePicker
-                  defaultValue={validade}
                   style={{ width: "100%" }}
                   allowClear={false}
                   disabled={perecivel === "Não" ? true : false}
@@ -256,7 +257,6 @@ export default Form.create({ name: "produto" })(
                 ]
               })(
                 <DatePicker
-                  defaultValue={fabricacao}
                   style={{ width: "100%" }}
                   format={"DD/MM/YYYY"}
                   placeholder="Informe a data de fabricação"
