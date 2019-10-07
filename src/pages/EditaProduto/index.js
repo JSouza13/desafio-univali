@@ -19,10 +19,6 @@ export default Form.create({ name: "produto" })(
   ({ history, form, ...props }) => {
     document.title = "Desafio - Cadastro";
 
-    useEffect(() => {
-      console.log("caiu aqui", props.match.params.key);
-    }, []);
-
     const hash = props.match.params.key;
 
     const produto = JSON.parse(localStorage.getItem(hash));
@@ -48,12 +44,6 @@ export default Form.create({ name: "produto" })(
     };
 
     function handleSubmit(event) {
-      console.log("1", produto);
-      console.log("2", produto.descricao);
-
-      console.log("3", produtoEditado);
-      console.log("4", produtoEditado.descricao);
-
       event.preventDefault();
       form.validateFields((err, values) => {
         if (!err) {
@@ -140,7 +130,8 @@ export default Form.create({ name: "produto" })(
                     required: true,
                     message: "Por favor, informe a descrição do item"
                   }
-                ]
+                ],
+                initialValue: [descricao]
               })(
                 <Input
                   maxLength={50}
@@ -170,9 +161,11 @@ export default Form.create({ name: "produto" })(
                     required: true,
                     message: "A quantidade deve ser informada"
                   }
-                ]
+                ],
+                initialValue: [quantidade]
               })(
                 <InputCustom
+                  value={quantidade}
                   type="numeric"
                   decimalSeparator=","
                   decimalScale={unMedida === "un" ? 0 : 3}
@@ -190,7 +183,8 @@ export default Form.create({ name: "produto" })(
                     required: true,
                     message: "O preço deve ser informado"
                   }
-                ]
+                ],
+                initialValue: [preco]
               })(
                 <InputCustom
                   prefix="R$"
@@ -227,9 +221,11 @@ export default Form.create({ name: "produto" })(
                     required: perecivel === "Sim" ? true : false,
                     message: "A data de validade deve ser informada."
                   }
-                ]
+                ],
+                initialValue: moment(validade, "DD/MM/YYYY")
               })(
                 <DatePicker
+                  defaultValue={moment(validade, "DD-MM-YYYY")}
                   style={{ width: "100%" }}
                   allowClear={false}
                   disabled={perecivel === "Não" ? true : false}
@@ -254,7 +250,8 @@ export default Form.create({ name: "produto" })(
                     required: true,
                     message: "A data de fabricação deve ser informada."
                   }
-                ]
+                ],
+                initialValue: moment(fabricacao, "DD/MM/YYYY")
               })(
                 <DatePicker
                   style={{ width: "100%" }}

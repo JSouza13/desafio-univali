@@ -19,13 +19,6 @@ export default Form.create({ name: "produto" })(
   ({ history, form, ...props }) => {
     document.title = "Desafio - Cadastro";
 
-    useEffect(() => {
-      async function loadProdutos() {
-        const response = await Object.keys(localStorage);
-      }
-      loadProdutos();
-    }, []);
-
     const [descricao, setDescricao] = useState("");
     const [unMedida, setUnMedida] = useState("un");
     const [quantidade, setQuantidade] = useState("");

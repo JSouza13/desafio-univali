@@ -88,7 +88,6 @@ export default ({ history, form, ...props }) => {
               )
             }
           >
-            {" "}
             <Button
               icon="edit"
               title="Editar"
