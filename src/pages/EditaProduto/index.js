@@ -17,11 +17,14 @@ import produtoService from "../../services/produtos";
 
 export default Form.create({ name: "produto" })(
   ({ history, form, ...props }) => {
-    document.title = "Desafio - Cadastro";
+    document.title = "Desafio - Editar";
+    useEffect(() => {
+      console.log("caiu aqui", props.match.params.key);
+    }, []);
 
-    const hash = props.match.params.key;
+    let hash = props.match.params.key;
 
-    const produto = JSON.parse(localStorage.getItem(hash));
+    let produto = JSON.parse(localStorage.getItem(hash));
 
     const [id, setId] = useState(produto.id);
     const [descricao, setDescricao] = useState(produto.descricao);
@@ -69,7 +72,21 @@ export default Form.create({ name: "produto" })(
               1000
             );
           } else {
-            produtoService.putProduct(hash, produtoEditado);
+            const a = btoa(
+              unescape(
+                encodeURIComponent(
+                  id +
+                    descricao +
+                    quantidade +
+                    unMedida +
+                    preco +
+                    perecivel +
+                    validade
+                )
+              )
+            );
+
+            produtoService.putProduct(a, produtoEditado);
 
             notification.success(
               {
@@ -78,7 +95,9 @@ export default Form.create({ name: "produto" })(
               },
               1000
             );
-
+            if (a != hash) {
+              localStorage.removeItem(hash);
+            }
             history.push("/produto");
           }
         } else {
@@ -143,7 +162,6 @@ export default Form.create({ name: "produto" })(
 
             <Form.Item label="Unidade de medida">
               <Select
-                defaultValue={unMedida}
                 placeholder="Selecione a unidade de medida"
                 value={unMedida}
                 onChange={handleSelect}
@@ -162,15 +180,16 @@ export default Form.create({ name: "produto" })(
                     message: "A quantidade deve ser informada"
                   }
                 ],
-                initialValue: [quantidade]
+                initialValue: { quantidade }
               })(
                 <InputCustom
-                  value={quantidade}
                   type="numeric"
                   decimalSeparator=","
                   decimalScale={unMedida === "un" ? 0 : 3}
                   suffix={unMedida}
                   placeholder="Informe a quantidade"
+                  initialValue={quantidade}
+                  value={quantidade}
                   onChange={event => setQuantidade(event.target.value)}
                 />
               )}
@@ -184,7 +203,7 @@ export default Form.create({ name: "produto" })(
                     message: "O preço deve ser informado"
                   }
                 ],
-                initialValue: [preco]
+                initialValue: { preco }
               })(
                 <InputCustom
                   prefix="R$"
@@ -193,6 +212,8 @@ export default Form.create({ name: "produto" })(
                   decimalScale={2}
                   type="numeric"
                   placeholder="Informe o preço"
+                  initialValue={preco}
+                  value={preco}
                   onChange={event => setPreco(event.target.value)}
                 />
               )}
@@ -225,7 +246,6 @@ export default Form.create({ name: "produto" })(
                 initialValue: moment(validade, "DD/MM/YYYY")
               })(
                 <DatePicker
-                  defaultValue={moment(validade, "DD-MM-YYYY")}
                   style={{ width: "100%" }}
                   allowClear={false}
                   disabled={perecivel === "Não" ? true : false}
