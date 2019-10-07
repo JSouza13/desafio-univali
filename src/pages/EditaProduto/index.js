@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Form,
   Button,
@@ -18,13 +18,10 @@ import produtoService from "../../services/produtos";
 export default Form.create({ name: "produto" })(
   ({ history, form, ...props }) => {
     document.title = "Desafio - Editar";
-    useEffect(() => {
-      console.log("caiu aqui", props.match.params.key);
-    }, []);
 
-    let hash = props.match.params.key;
+    const hash = props.match.params.key;
 
-    let produto = JSON.parse(localStorage.getItem(hash));
+    const produto = JSON.parse(localStorage.getItem(hash));
 
     const [id, setId] = useState(produto.id);
     const [descricao, setDescricao] = useState(produto.descricao);
@@ -50,9 +47,7 @@ export default Form.create({ name: "produto" })(
       event.preventDefault();
       form.validateFields((err, values) => {
         if (!err) {
-          const dataAtual = moment().format("DD/MM/YYYY");
-
-          if (validade < dataAtual) {
+          if (moment(validade, "DD/MM/YYYY").diff(moment(), "days") < 0) {
             notification.warning(
               {
                 key: "warning",
@@ -95,7 +90,7 @@ export default Form.create({ name: "produto" })(
               },
               1000
             );
-            if (a != hash) {
+            if (a !== hash) {
               localStorage.removeItem(hash);
             }
             history.push("/produto");

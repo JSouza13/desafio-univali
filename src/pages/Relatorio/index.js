@@ -122,7 +122,6 @@ export default ({ history, form, ...props }) => {
         )
       )
     );
-
     Modal.confirm({
       title: `Excluir o produto "${produto.descricao}"`,
       content: `Você tem certeza que deseja excluir esse produto?`,
@@ -147,24 +146,6 @@ export default ({ history, form, ...props }) => {
       1000
     );
     history.push("/produto");
-  }
-
-  function handleEditar(produto) {
-    var encodedData = btoa(
-      unescape(
-        encodeURIComponent(
-          produto.id +
-            produto.descricao +
-            produto.quantidade +
-            produto.unMedida +
-            produto.preco +
-            produto.perecivel +
-            produto.validade
-        )
-      )
-    );
-
-    console.log(produtoService.ListProduct());
   }
 
   return (
